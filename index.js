@@ -22,6 +22,8 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_UPASS}@cluste
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const productCollection = client.db("cloudBazar").collection("products");
+  const ordersCollection = client.db("cloudBazar").collection("orders");
+
   // create product
   app.post('/addProduct',(req, res) =>{
       const newProduct = req.body;
@@ -37,6 +39,23 @@ client.connect(err => {
           res.send(product);
       })
   })
+  // create order
+  app.post('/addOrder',(req, res) =>{
+    const order = req.body;
+    ordersCollection.insertOne(order)
+    .then(result =>{
+        res.send(result.insertedCount>0)
+    })
+  })
+  //read order from frontend
+  app.get('/orders',(req, res) =>{
+    ordersCollection.find({})
+    .toArray((err, orders) =>{
+        res.send(orders);
+        //console.log(orders)
+    })
+  })
+
   console.log('db connected!!');
 });
 
