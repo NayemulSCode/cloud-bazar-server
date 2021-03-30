@@ -30,6 +30,13 @@ client.connect(err => {
           res.send(result.insertedCount>0)
       })
   })
+  //read product 
+  app.get('/products', (req, res) =>{
+      productCollection.find({})
+      .toArray((err, product) =>{
+          res.send(product);
+      })
+  })
   console.log('db connected!!');
 });
 
