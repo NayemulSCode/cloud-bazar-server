@@ -49,7 +49,8 @@ client.connect(err => {
   })
   //read order from frontend
   app.get('/orders',(req, res) =>{
-    ordersCollection.find({})
+    console.log(req.query.email)
+    ordersCollection.find({email: req.query.email})
     .toArray((err, orders) =>{
         res.send(orders);
         //console.log(orders)
